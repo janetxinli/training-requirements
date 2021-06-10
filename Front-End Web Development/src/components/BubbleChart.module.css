@@ -1,0 +1,22 @@
+.bubble-main {
+  flex-direction: column;
+}
+
+@media (min-width: 720px) {
+  .bubble-main {
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+  }
+}
+
+.bubble-chart {
+  width: 80%;
+}
+
+@media (min-width: 720px) {
+  .bubble-chart {
+    width: 100%;
+  }
+}
+

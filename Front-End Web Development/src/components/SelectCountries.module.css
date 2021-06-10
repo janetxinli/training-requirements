@@ -1,0 +1,57 @@
+.sidebar {
+  width: 100%;
+  margin-top: 2em;
+}
+
+@media (min-width: 720px) {
+  .sidebar {
+    width: 30%;
+    align-items: stretch;
+    margin-top: 6em;
+  }
+}
+
+@media (min-width: 1240px) {
+  .sidebar {
+    width: 20%;
+  }
+}
+
+.select {
+  height: 20vh;
+  overflow-y: auto;
+}
+
+@media (min-width: 720px) {
+  .select {
+    height: 60vh;
+  }
+}
+
+@media (min-width: 1240px) {
+  .select {
+    height: 70vh;
+  }
+}
+
+
+.selected-countries,
+.unselected-countries {
+  width: 100%;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.selected-countries {
+  position: relative;
+  border-bottom: 1px solid grey;
+}
+
+.country-name label {
+  display: inline-block;
+  overflow-x: hidden;
+}
+
+.dropdown {
+  position: fixed;
+}

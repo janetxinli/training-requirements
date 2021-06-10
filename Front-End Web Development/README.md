@@ -1,23 +1,70 @@
-# Front-End Web Development
+# Getting Started with Create React App
 
-**Note** This miniproject is experimental -- if you find flaws or have other suggestions, let Henry know.
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-As bioinformatics becomes more central in the study of biology, it is important to develop user-friendly tools for biologists so that they can run bioinformatics analyses without needing to learn a programming language. Excellent examples of this can be found in [gepia2](http://gepia2.cancer-pku.cn/#index), [enrichr](https://maayanlab.cloud/Enrichr/), and [cBioPortal](https://www.cbioportal.org/). While `R-shiny` and `plotly dash` are useful for quickly creating small web apps that can serve a modest number of users, more complicated and scalable applications will require a robust web framework.
+## Available Scripts
 
-In this miniproject, you are tasked with creating a web application based on `react.js` which can recapitulate the following charts as closely as possible:
+In the project directory, you can run:
 
-1. GapMinder Bubble Chart ([link](https://www.gapminder.org/tools/#$chart-type=bubbles))
-2. GapMinder Line Chart ([link](https://tools-v1.gapminder.org/tools/#$ui$dialogs$moreoptions$opened:true;;;&chart-type=linechart&url=v1)) 
+### `npm start`
 
-Then, place links to these charts within a user-friendly home page so that the following workflow is respected:
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-User visits home page --> User selects either the bubble chart or line chart using links --> user is redirected to the chart they selected --> User interacts with that chart --> User can press another link to return to the home page at any time.
+The page will reload if you make edits.\
+You will also see any lint errors in the console.
 
-The data needed to complete this challenge `gapminder_clean.csv` is provided here. There may be some values missing, let Henry know if you are missing too much data to complete this.
+### `npm test`
 
-Web development / design is a key part of communicating science, and it is expected that all completed miniprojects will have the functionality noted above and offer a straightforward, user-friendly interface.
+Launches the test runner in the interactive watch mode.\
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-All code should be commited and pushed to your fork of the training-requirements repository on GitHub. It should also include a `README.md` that explains how to launch your web application locally. Once you are done, let Henry know and he will test your web app.
+### `npm run build`
 
-You can learn basic web development from a variety of free tutorials, such as W3 schools ([link](https://www.w3schools.com/)). An excellent `react.js` course is found [here](https://www.udemy.com/course/react-the-complete-guide-incl-redux/learn/lecture/8268490?start=15#overview) -- and [here](https://reactjs.org/tutorial/tutorial.html) is a free tutorial.
+Builds the app for production to the `build` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.
 
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
+
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+
+### `npm run eject`
+
+**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+
+If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+
+Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+
+You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+
+## Learn More
+
+You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+
+To learn React, check out the [React documentation](https://reactjs.org/).
+
+### Code Splitting
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+
+### Analyzing the Bundle Size
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+
+### Making a Progressive Web App
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+
+### Advanced Configuration
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+
+### Deployment
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+
+### `npm run build` fails to minify
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
