@@ -1,24 +1,18 @@
-import React, { useState, useImperativeHandle, useEffect } from "react";
-import styles from "./SelectCountries.module.css";
+import React, { useState } from "react";
+import styles from "./ChartSidebar.module.css";
 
-//TODO: make component for checkbox input
+//TODO: make component for checkbox inputs?
 
-export const SelectCountries = React.forwardRef((props, ref) => {
-  const { selected, toggleSelected, sizeValue, setSizeValue } = props;
-
-  const [value, setValue] = useState("");
-  const [hover, setHover] = useState(null);
-
-  useImperativeHandle(ref, () => ({
-    setHover,
-  }));
+export const ChartSidebar = ({ selected, toggleSelected, children }) => {
+  const [searchValue, setSearchValue] = useState("");
 
   return (
     <div className={`df df-fc df-ai-c ${styles.sidebar}`}>
+      <img src={process.env.PUBLIC_URL + "/world_colour_map.png"} alt="Colour legend map for plot points"/>
       <input
         type="text"
-        value={value}
-        onChange={({ target }) => setValue(target.value)}
+        value={searchValue}
+        onChange={({ target }) => setSearchValue(target.value)}
       />
       <div className={`df df-fc df-ai-fs ${styles.select}`}>
         {Object.entries(selected).filter((o) => o[1] === true).length > 0 ? (
@@ -44,7 +38,7 @@ export const SelectCountries = React.forwardRef((props, ref) => {
         ) : null}
 
         <div className={`df df-fc df-ai-fs ${styles["unselected-countries"]}`}>
-          {value === ""
+          {searchValue === ""
             ? Object.entries(selected)
                 .filter((o) => o[1] === false)
                 .map((o) => o[0])
@@ -65,7 +59,9 @@ export const SelectCountries = React.forwardRef((props, ref) => {
             : Object.entries(selected)
                 .filter((o) => o[1] === false)
                 .map((o) => o[0])
-                .filter((n) => n.toLowerCase().search(value.toLowerCase()) > -1)
+                .filter(
+                  (n) => n.toLowerCase().search(searchValue.toLowerCase()) > -1
+                )
                 .map((l) => {
                   return (
                     <article className={styles["country-name"]} key={l}>
@@ -82,20 +78,7 @@ export const SelectCountries = React.forwardRef((props, ref) => {
                 })}
         </div>
       </div>
-      <select
-        className="dropdown"
-        name="pets"
-        defaultValue={sizeValue}
-        onChange={(e) => setSizeValue(e.target.value)}
-      >
-        <option value="population">{hover ? hover : "Population"}</option>
-        <option value="babiesPerWoman">
-          {hover ? hover : "Babies Per Woman"}
-        </option>
-        <option value="co2">
-          {hover ? hover : "CO2 Emissions per Person"}
-        </option>
-      </select>
+      {children}
     </div>
   );
-});
+};

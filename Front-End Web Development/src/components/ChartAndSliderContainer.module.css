@@ -1,0 +1,9 @@
+.chart-container {
+  width: 80%;
+}
+
+@media (min-width: 720px) {
+  .chart-container {
+    width: 100%;
+  }
+}

@@ -1,21 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Papa from "papaparse";
+import { Chart } from "chart.js";
+import annotationPlugin from "chartjs-plugin-annotation";
+import ChartDataLabels from "chartjs-plugin-datalabels";
 import gapminder from "./data/gapminder_clean.csv";
+import { getContinent } from "./helpers/getContinent";
+import { Header } from "./components/Header";
+import { Home } from "./components/Home";
 import { BubbleChart } from "./components/BubbleChart";
 import { LineChart } from "./components/LineChart";
-import "./App.css";
 
-const getContinent = (continent) => {
-  switch (continent) {
-    case "Oceania":
-      return "Asia";
-    case "":
-      return "Unknown";
-    default:
-      return continent;
-  }
-};
+Chart.register(annotationPlugin);
+Chart.register(ChartDataLabels);
 
 function App() {
   const [allData, setAllData] = useState(null);
@@ -30,9 +27,8 @@ function App() {
           .map((res) => {
             return {
               label: res.countryName,
-              x: res.gdpPercap,
-              y: res.lifeExpectancy,
-              r: res.pop / 15000000,
+              gdpPercap: res.gdpPercap,
+              lifeExpectancy: res.lifeExpectancy,
               population: res.pop,
               babiesPerWoman: res.fertilityRate,
               co2: res.co2,
@@ -49,24 +45,18 @@ function App() {
 
   return (
     <Router>
-      <div className="App">
-        <h1>Gapminder</h1>
-        <Switch>
-          {allData && (
-            <Route path="/bubble">
-              <BubbleChart allData={allData} />
-            </Route>
-          )}
-          {allData && (
-            <Route path="/line">
-              <LineChart allData={allData} />
-            </Route>
-          )}
-          <Route path="/">
-            <p>Home</p>
-          </Route>
-        </Switch>
-      </div>
+      <Header />
+      <Switch>
+        <Route path="/bubble">
+          <BubbleChart allData={allData} />
+        </Route>
+        <Route path="/line">
+          <LineChart allData={allData} />
+        </Route>
+        <Route path="/">
+          <Home />
+        </Route>
+      </Switch>
     </Router>
   );
 }

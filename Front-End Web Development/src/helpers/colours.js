@@ -25,3 +25,9 @@ export const colours = {
     blue: 0,
   },
 };
+
+export const getColour = (continent, alpha = 1) => {
+  return `rgba(${colours[continent].red}, ${colours[continent].green}, ${
+    colours[continent].blue
+  }, ${"" + alpha})`;
+};

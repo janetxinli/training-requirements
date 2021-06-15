@@ -1,6 +1,7 @@
 import { getBubbleBackgroundColour } from "./getBubbleBackgroundColour";
 import { getBubbleBorderColour } from "./getBubbleBorderColour";
 
+//TODO use getColour function
 const getPrintableValue = (value) => {
   let suffix;
   const log = Math.log10(value);
@@ -36,14 +37,12 @@ export const bubbleChartHover = (
   chart,
   radiusScale,
   selected,
-  ref
+  setHoverValue
 ) => {
   if (data.length) {
-    if (ref.current) {
-      ref.current.setHover(
-        getPrintableValue(data[0].element.$context.parsed._custom / radiusScale)
-      );
-    }
+    setHoverValue(
+      getPrintableValue(data[0].element.$context.parsed._custom / radiusScale)
+    );
 
     // update chart colours to darken hovered bubble
     // and lighten others
@@ -91,9 +90,7 @@ export const bubbleChartHover = (
     };
     chart.update();
   } else {
-    if (ref.current) {
-      ref.current.setHover(null);
-    }
+    setHoverValue(null);
 
     // darken all bubbles to the background colour
     chart.data.datasets[0].backgroundColor = getBubbleBackgroundColour(
