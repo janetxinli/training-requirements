@@ -1,16 +1,17 @@
-import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import Papa from "papaparse";
 import { Chart } from "chart.js";
 import annotationPlugin from "chartjs-plugin-annotation";
 import ChartDataLabels from "chartjs-plugin-datalabels";
-import gapminder from "./data/gapminder_clean.csv";
-import { getContinent } from "./helpers/getContinent";
+import Papa from "papaparse";
+import React, { useEffect, useState } from "react";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { BubbleChart } from "./components/BubbleChart";
 import { Header } from "./components/Header";
 import { Home } from "./components/Home";
-import { BubbleChart } from "./components/BubbleChart";
 import { LineChart } from "./components/LineChart";
+import gapminder from "./data/gapminder_clean.csv";
+import { getContinent } from "./helpers/getContinent";
 
+// register Chart.js plugins globally
 Chart.register(annotationPlugin);
 Chart.register(ChartDataLabels);
 

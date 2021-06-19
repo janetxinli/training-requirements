@@ -3,16 +3,25 @@ import { Bubble } from "react-chartjs-2";
 import { bubbleChartHover } from "../helpers/bubbleChartHover";
 import { getBubbleBackgroundColour } from "../helpers/getBubbleBackgroundColour";
 import { getBubbleBorderColour } from "../helpers/getBubbleBorderColour";
-import { Slider } from "./Slider";
-import { ChartSidebar } from "./ChartSidebar";
+import {
+  getAxisFontSize,
+  getDatalabelFontSize,
+  getTitleFontSize,
+} from "../helpers/getFontSize";
 import { useChartData } from "../hooks/useChartData";
-import { getColour } from "../helpers/colours";
+import { BubbleSizeDropdown } from "./BubbleSizeDropdown";
 import { ChartAndSliderContainer } from "./ChartAndSliderContainer";
 import { ChartPageLayout } from "./ChartPageLayout";
-import { BubbleSizeDropdown } from "./BubbleSizeDropdown";
+import { ChartSidebar } from "./ChartSidebar";
+import { Slider } from "./Slider";
+
+//TODO don't change all select values on hover
+//TODO loading component
+//TODO consolidate colour helper functions
 
 export const BubbleChart = ({ allData }) => {
   const chartData = useChartData(allData);
+
   const [radiusCategory, setRadiusCategory] = useState("population");
   const [currentYear, setCurrentYear] = useState(2007);
   const [hoverValue, setHoverValue] = useState(null);
@@ -24,6 +33,7 @@ export const BubbleChart = ({ allData }) => {
     co2: 1,
   };
 
+  // update chartData once loaded
   useEffect(() => {
     if (allData) {
       chartData.initializeData(
@@ -34,6 +44,7 @@ export const BubbleChart = ({ allData }) => {
     }
   }, [allData]);
 
+  // filter chartData when currentYear changes
   useEffect(() => {
     chartData.filterData((d) => {
       return d.year === currentYear;
@@ -41,7 +52,9 @@ export const BubbleChart = ({ allData }) => {
   }, [currentYear]);
 
   if (chartData.data && chartData.selected) {
-    const chartObjectData = {
+    // data available to render
+
+    const bubbleChartData = {
       datasets: [
         {
           label: "Population",
@@ -63,19 +76,12 @@ export const BubbleChart = ({ allData }) => {
             chartData.data,
             chartData.selected
           ),
-          datalabels: {
-            align: "top",
-            font: {
-              size: 16,
-              family: "'Work Sans', sans-serif",
-            },
-            anchor: "end",
-          },
         },
       ],
     };
 
-    const chartOptions = {
+    const bubbleChartOptions = {
+      aspectRatio: 1,
       animation: {
         duration: 0,
       },
@@ -104,7 +110,12 @@ export const BubbleChart = ({ allData }) => {
             display: true,
             text: "Income per person (GDP/capita)",
             font: {
-              size: 24,
+              size: getAxisFontSize(),
+              family: "'Work Sans', sans-serif",
+            },
+          },
+          ticks: {
+            font: {
               family: "'Work Sans', sans-serif",
             },
           },
@@ -116,7 +127,12 @@ export const BubbleChart = ({ allData }) => {
             display: true,
             text: "Life expectancy (years)",
             font: {
-              size: 24,
+              size: getAxisFontSize(),
+              family: "'Work Sans', sans-serif",
+            },
+          },
+          ticks: {
+            font: {
               family: "'Work Sans', sans-serif",
             },
           },
@@ -124,10 +140,18 @@ export const BubbleChart = ({ allData }) => {
       },
       plugins: {
         tooltip: {
+          filter: (chart) => {
+            const label = chart.dataset.data[chart.dataIndex].label;
+            return !chartData.selected[label];
+          },
           callbacks: {
             label: (ctx) => {
               return ctx.dataset.data[ctx.dataIndex].label;
             },
+          },
+          bodyFont: {
+            family: "'Work Sans', sans-serif",
+            size: getDatalabelFontSize(),
           },
           displayColors: false,
         },
@@ -138,7 +162,7 @@ export const BubbleChart = ({ allData }) => {
           display: true,
           text: currentYear,
           font: {
-            size: 36,
+            size: getTitleFontSize(),
             family: "'Work Sans', sans-serif",
           },
         },
@@ -149,10 +173,19 @@ export const BubbleChart = ({ allData }) => {
             }
             return null;
           },
-          color: (context) => {
-            const continent = context.dataset.data[context.dataIndex].continent;
-            return getColour(continent);
+          color: "white",
+          align: "top",
+          font: {
+            size: getDatalabelFontSize(),
+            family: "'Work Sans', sans-serif",
           },
+          anchor: "end",
+          offset: 4,
+          backgroundColor: "rgba(0, 0, 0, 0.8)",
+          borderColor: "rgb(128, 128, 128)",
+          borderRadius: 2,
+          borderWidth: 1,
+          clamp: true,
         },
       },
     };
@@ -160,7 +193,7 @@ export const BubbleChart = ({ allData }) => {
     return (
       <ChartPageLayout>
         <ChartAndSliderContainer>
-          <Bubble data={chartObjectData} options={chartOptions} height={300} />
+          <Bubble data={bubbleChartData} options={bubbleChartOptions} />
           <Slider
             listData={chartData.allYears}
             min="0"

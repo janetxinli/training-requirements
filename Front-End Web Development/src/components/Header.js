@@ -6,7 +6,7 @@ export const Header = () => {
   const location = useLocation();
 
   return (
-    <header className={`container df df-fc df-ai-c df-jc-c ${styles.header}`}>
+    <header className={`container df df-ai-c df-jc-c ${styles.header}`}>
       <Link to="/">
         <h1 className={styles.logo}>Gapminder</h1>
       </Link>

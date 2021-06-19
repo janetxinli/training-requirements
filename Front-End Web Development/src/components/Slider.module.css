@@ -17,7 +17,8 @@
   width: 1rem;
   border-radius: 50%;
   background: rgb(42,157,143);
-  margin: -4px;
+  margin: -4px 0;
+  /* margin-right: 0; */
 }
 
 .slider:focus {

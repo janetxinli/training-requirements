@@ -17,27 +17,20 @@ export const useChartData = (allData, defaultSelected = []) => {
     }
   }, [allData]);
 
-  // reset selected
-  useEffect(() => {
-    // TODO filter out any undefined -- maybe in main app?
-    if (data) {
-      setSelected(
-        [...new Set(data.map((d) => d.label))].reduce((o, a) => {
-          if (defaultSelected.indexOf(a) === -1) {
-            o[a] = false;
-          } else {
-            o[a] = true;
-          }
-
-          return o;
-        }, {})
-      );
-    }
-  }, [data]);
-
   // initialize selected data
   const initializeData = (data) => {
     setData(data);
+    setSelected(
+      [...new Set(data.map((d) => d.label))].reduce((o, a) => {
+        if (defaultSelected.indexOf(a) === -1) {
+          o[a] = false;
+        } else {
+          o[a] = true;
+        }
+
+        return o;
+      }, {})
+    );
   };
 
   // toggle a selected country

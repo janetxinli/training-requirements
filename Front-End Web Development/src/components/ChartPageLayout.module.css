@@ -2,10 +2,10 @@
   flex-direction: column;
 }
 
-@media (min-width: 720px) {
+@media (min-width: 1280px) {
   .chart-layout {
     flex-direction: row;
-    align-items: flex-start;
+    align-items: center;
     justify-content: center;
   }
 }

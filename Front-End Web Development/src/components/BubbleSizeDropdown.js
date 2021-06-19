@@ -1,12 +1,14 @@
 import React from "react";
+import styles from "./BubbleSizeDropdown.module.css";
 
+//TODO make sure non-hovering categories aren't changed on hover
 export const BubbleSizeDropdown = ({ sizeValue, setSizeValue, hoverValue }) => {
   return (
     <select
-      className="dropdown"
       name="pets"
       defaultValue={sizeValue}
       onChange={(e) => setSizeValue(e.target.value)}
+      className={styles.dropdown}
     >
       <option value="population">
         {hoverValue ? hoverValue : "Population"}

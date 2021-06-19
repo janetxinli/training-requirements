@@ -1,22 +1,30 @@
 import React, { useEffect, useState } from "react";
 import { Line } from "react-chartjs-2";
 import { useChartData } from "../hooks/useChartData";
+import {
+  getTitleFontSize,
+  getAxisFontSize,
+  getDatalabelFontSize,
+} from "../helpers/getFontSize";
 import { colours } from "../helpers/colours";
 import { ChartPageLayout } from "./ChartPageLayout";
 import { ChartAndSliderContainer } from "./ChartAndSliderContainer";
 import { Slider } from "./Slider";
 import { ChartSidebar } from "./ChartSidebar";
 
-//TODO styles
-//TODO wrapping text
-
 export const LineChart = ({ allData }) => {
-  const chartData = useChartData(allData, [
-    "United States",
-    "China",
-    "Ethiopia",
-  ]);
+  const chartData = useChartData(allData, ["Canada", "Indonesia", "Nigeria"]);
   const [maxYear, setMaxYear] = useState(2007);
+
+  useEffect(() => {
+    if (allData) {
+      chartData.initializeData(
+        allData.filter((d) => {
+          return d.year <= maxYear;
+        })
+      );
+    }
+  }, [allData]);
 
   useEffect(() => {
     chartData.filterData((d) => {
@@ -51,21 +59,12 @@ export const LineChart = ({ allData }) => {
               p.year === maxYear ? 8 : 0
             ),
             pointHoverBorderWidth: 3,
-            datalabels: {
-              align: "right",
-              font: {
-                size: 16,
-                family: "'Work Sans', sans-serif",
-              },
-              padding: {
-                left: 10,
-              },
-            },
           };
         }),
     };
 
     const chartOptions = {
+      aspectRatio: 1,
       layout: {
         padding: {
           right: 80,
@@ -76,6 +75,11 @@ export const LineChart = ({ allData }) => {
       },
       onHover: (e, data, chart) => {
         if (data.length) {
+          chart.config.options.plugins.datalabels.backgroundColor = (d) => {
+            return d.datasetIndex === data[0].datasetIndex
+              ? "rgba(0, 0, 0, 0.8)"
+              : "rgba(0, 0, 0, 0.1)";
+          };
           chart.data.datasets = chart.data.datasets.map((d, i) => {
             if (i === data[0].datasetIndex) {
               return d;
@@ -93,6 +97,8 @@ export const LineChart = ({ allData }) => {
           });
           chart.update();
         } else {
+          chart.config.options.plugins.datalabels.backgroundColor = (d) =>
+            "rgba(0, 0, 0, 1)";
           chart.data.datasets = chart.data.datasets.map((d) => ({
             ...d,
             borderColor: d.borderColor.replace(/0.1\)/, "1)"),
@@ -105,7 +111,20 @@ export const LineChart = ({ allData }) => {
       scales: {
         x: {
           type: "category",
-          labels: chartData.allYears.map((d) => "" + d).concat("2021"),
+          labels: chartData.allYears.map((d) => "" + d).concat("", "", "Today"),
+          title: {
+            display: true,
+            text: "Time",
+            font: {
+              size: window.innerWidth < 1280 ? 16 : 24,
+              family: "'Work Sans', sans-serif",
+            },
+          },
+          ticks: {
+            font: {
+              family: "'Work Sans', sans-serif",
+            },
+          },
         },
         y: {
           type: "logarithmic",
@@ -113,11 +132,28 @@ export const LineChart = ({ allData }) => {
           max: 80000,
           title: {
             display: true,
-            text: "Income per person (GDP/capita, PPP$ inflation-adjusted)",
+            text: "Income per person (GDP/capita)",
+            font: {
+              size: getAxisFontSize(),
+              family: "'Work Sans', sans-serif",
+            },
+          },
+          ticks: {
+            font: {
+              family: "'Work Sans', sans-serif",
+            },
           },
         },
       },
       plugins: {
+        title: {
+          display: true,
+          text: `Until ${maxYear}`,
+          font: {
+            size: getTitleFontSize(),
+            family: "'Work Sans', sans-serif",
+          },
+        },
         tooltip: {
           enabled: false,
         },
@@ -141,13 +177,38 @@ export const LineChart = ({ allData }) => {
         datalabels: {
           formatter: (value, context) => {
             if (context.dataIndex === context.dataset.data.length - 1) {
-              return context.dataset.label;
+              const label = context.dataset.label;
+              const labelSplit = label.split(" ");
+              if (label.split(" ").length > 2) {
+                let wrappedLabel = "";
+                for (let i = 0; i < labelSplit.length; i += 2) {
+                  if (labelSplit[i + 1]) {
+                    wrappedLabel += `${labelSplit[i]} ${labelSplit[i + 1]}`;
+                  } else {
+                    wrappedLabel += `${labelSplit[i]}`;
+                  }
+                  if (i < labelSplit.length - 2) {
+                    wrappedLabel += "\n";
+                  }
+                }
+
+                return wrappedLabel;
+              }
+              return labelSplit.join(" ");
             }
             return null;
           },
-          color: (context) => {
-            return context.dataset.borderColor;
+          color: "white",
+          align: "right",
+          font: {
+            size: getDatalabelFontSize(),
+            family: "'Work Sans', sans-serif",
           },
+          offset: 14,
+          backgroundColor: (d) => "rgba(0, 0, 0, 1)",
+          borderRadius: 2,
+          borderWidth: 1,
+          clamp: true,
         },
       },
     };
@@ -155,7 +216,7 @@ export const LineChart = ({ allData }) => {
     return (
       <ChartPageLayout>
         <ChartAndSliderContainer>
-          <Line data={data} options={chartOptions} height={300} />
+          <Line data={data} options={chartOptions} />
           <Slider
             listData={chartData.allYears}
             min="0"

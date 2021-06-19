@@ -8,11 +8,17 @@ export const ChartSidebar = ({ selected, toggleSelected, children }) => {
 
   return (
     <div className={`df df-fc df-ai-c ${styles.sidebar}`}>
-      <img src={process.env.PUBLIC_URL + "/world_colour_map.png"} alt="Colour legend map for plot points"/>
+      <img
+        src={process.env.PUBLIC_URL + "/world_colour_map.svg"}
+        alt="Colour legend map for plot points"
+        className={styles.map}
+      />
       <input
         type="text"
         value={searchValue}
         onChange={({ target }) => setSearchValue(target.value)}
+        className={styles.search}
+        placeholder="Search"
       />
       <div className={`df df-fc df-ai-fs ${styles.select}`}>
         {Object.entries(selected).filter((o) => o[1] === true).length > 0 ? (
