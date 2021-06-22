@@ -27,7 +27,31 @@ export const colours = {
 };
 
 export const getColour = (continent, alpha = 1) => {
-  return `rgba(${colours[continent].red}, ${colours[continent].green}, ${
-    colours[continent].blue
-  }, ${"" + alpha})`;
+  if (colours[continent]) {
+    return `rgba(${colours[continent].red}, ${colours[continent].green}, ${colours[continent].blue}, ${alpha})`;
+  }
+  return null;
+};
+
+export const getBubbleBackgroundColour = (data, selected) => {
+  if (Object.values(selected).indexOf(true) === -1) {
+    return data.map((d) => getColour(d.continent, 0.8));
+  }
+  return data.map((d) =>
+    selected[d.label]
+      ? getColour(d.continent, 0.8)
+      : getColour(d.continent, 0.2),
+  );
+};
+
+export const getBubbleBorderColour = (data, selected) => {
+  if (Object.values(selected).indexOf(true) === -1) {
+    return data.map((d) => "rgba(128, 128, 128, 0.8)");
+  }
+  return data.map((d) => {
+    if (selected[d.label]) {
+      return "rgba(128, 128, 128, 0.8)";
+    }
+    return "rgba(128, 128, 128, 0.1)";
+  });
 };

@@ -1,0 +1,10 @@
+@import "../variables";
+
+.chart-container {
+  width: 100%;
+
+  @media (min-width: $lgscreen) {
+    width: 75%;
+    max-width: 65em;
+  }
+}

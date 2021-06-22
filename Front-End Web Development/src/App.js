@@ -22,21 +22,19 @@ function App() {
     Papa.parse(gapminder, {
       download: true,
       header: true,
-      complete: function (results) {
+      complete: (results) => {
         const filtered = results.data
-          .filter((d) => !isNaN(d.year))
-          .map((res) => {
-            return {
-              label: res.countryName,
-              gdpPercap: res.gdpPercap,
-              lifeExpectancy: res.lifeExpectancy,
-              population: res.pop,
-              babiesPerWoman: res.fertilityRate,
-              co2: res.co2,
-              continent: getContinent(res.continent),
-              year: +res.year,
-            };
-          })
+          .filter((d) => !Number.isNaN(Number(d.year)))
+          .map((res) => ({
+            label: res.countryName,
+            gdpPercap: res.gdpPercap,
+            lifeExpectancy: res.lifeExpectancy,
+            population: res.pop,
+            babiesPerWoman: res.fertilityRate,
+            co2: res.co2,
+            continent: getContinent(res.continent),
+            year: +res.year,
+          }))
           .filter((d) => d.continent !== "Unknown");
 
         setAllData(filtered);

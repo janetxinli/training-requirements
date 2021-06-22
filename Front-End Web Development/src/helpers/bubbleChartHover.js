@@ -1,7 +1,5 @@
-import { getBubbleBackgroundColour } from "./getBubbleBackgroundColour";
-import { getBubbleBorderColour } from "./getBubbleBorderColour";
+import { getBubbleBackgroundColour, getBubbleBorderColour } from "./colours";
 
-//TODO use getColour function
 const getPrintableValue = (value) => {
   let suffix;
   const log = Math.log10(value);
@@ -30,39 +28,40 @@ const getPrintableValue = (value) => {
   return prefix + suffix;
 };
 
-// handle hovering for bubble chart
 export const bubbleChartHover = (
   e,
   data,
   chart,
   radiusScale,
   selected,
-  setHoverValue
+  setHoverValue,
 ) => {
   if (data.length) {
+    // hovering over a data point
+
+    // set hover value to size value
     setHoverValue(
-      getPrintableValue(data[0].element.$context.parsed._custom / radiusScale)
+      getPrintableValue(data[0].element.$context.parsed._custom / radiusScale),
     );
 
     // update chart colours to darken hovered bubble
     // and lighten others
     chart.data.datasets[0].backgroundColor =
-      chart.data.datasets[0].backgroundColor.map((c, i) => {
-        return i === data[0].index
+      chart.data.datasets[0].backgroundColor.map((c, i) =>
+        i === data[0].index
           ? c.replace(/0.[0-9]\)/, "1)")
-          : c.replace(/0.[0-9]\)|1\)/, "0.1)");
-      });
+          : c.replace(/0.[0-9]\)|1\)/, "0.1)"),
+      );
 
     // lighten borders
     chart.data.datasets[0].borderColor = chart.data.datasets[0].data.map(
-      (d, i) => {
-        return i === data[0].index
+      (d, i) =>
+        i === data[0].index
           ? "rgba(128, 128, 128, 0.8)"
-          : "rgba(128, 128, 128, 0.1)";
-      }
+          : "rgba(128, 128, 128, 0.1)",
     );
 
-    // add annotation
+    // add line annotation
     chart.config.options.plugins.annotation = {
       annotations: {
         line1: {
@@ -88,24 +87,29 @@ export const bubbleChartHover = (
         },
       },
     };
+
     chart.update();
   } else {
+    // hovering over plot background
+
+    // remove hover value
     setHoverValue(null);
 
     // darken all bubbles to the background colour
     chart.data.datasets[0].backgroundColor = getBubbleBackgroundColour(
       chart.data.datasets[0].data,
-      selected
+      selected,
     );
 
     // darken border
     chart.data.datasets[0].borderColor = getBubbleBorderColour(
       chart.data.datasets[0].data,
-      selected
+      selected,
     );
 
     // remove annotation
     chart.config.options.plugins.annotation = undefined;
+
     chart.update();
   }
 };

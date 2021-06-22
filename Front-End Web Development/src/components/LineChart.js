@@ -1,38 +1,38 @@
 import React, { useEffect, useState } from "react";
 import { Line } from "react-chartjs-2";
-import { useChartData } from "../hooks/useChartData";
+import { getColour } from "../helpers/colours";
 import {
-  getTitleFontSize,
   getAxisFontSize,
   getDatalabelFontSize,
+  getTitleFontSize,
 } from "../helpers/getFontSize";
-import { colours } from "../helpers/colours";
-import { ChartPageLayout } from "./ChartPageLayout";
+import { lineChartHover } from "../helpers/lineChartHover";
+import { useChartData } from "../hooks/useChartData";
 import { ChartAndSliderContainer } from "./ChartAndSliderContainer";
-import { Slider } from "./Slider";
+import { ChartPageLayout } from "./ChartPageLayout";
 import { ChartSidebar } from "./ChartSidebar";
+import { Loading } from "./Loading";
+import { Slider } from "./Slider";
 
 export const LineChart = ({ allData }) => {
   const chartData = useChartData(allData, ["Canada", "Indonesia", "Nigeria"]);
   const [maxYear, setMaxYear] = useState(2007);
 
+  // update chartData once loaded
   useEffect(() => {
     if (allData) {
-      chartData.initializeData(
-        allData.filter((d) => {
-          return d.year <= maxYear;
-        })
-      );
+      chartData.initializeData(allData.filter((d) => d.year <= maxYear));
     }
   }, [allData]);
 
+  // filter chartData when maxYear changes
   useEffect(() => {
-    chartData.filterData((d) => {
-      return d.year <= maxYear;
-    });
+    chartData.filterData((d) => d.year <= maxYear);
   }, [maxYear]);
 
   if (chartData.data && chartData.selected) {
+    // data available to render
+
     const data = {
       labels: chartData.allYears,
       datasets: Object.entries(chartData.selected)
@@ -40,23 +40,21 @@ export const LineChart = ({ allData }) => {
         .map((o) => o[0])
         .map((c) => {
           const countryData = chartData.data.filter((d) => d.label === c);
-          const continent = countryData[0].continent;
+          const { continent } = countryData[0];
           return {
             label: c,
-            data: countryData.map((p) => {
-              return {
-                x: p.year,
-                y: p.gdpPercap,
-              };
-            }),
-            borderColor: `rgba(${colours[continent].red}, ${colours[continent].green}, ${colours[continent].blue}, 1)`,
+            data: countryData.map((p) => ({
+              x: p.year,
+              y: p.gdpPercap,
+            })),
+            borderColor: getColour(continent),
             borderWidth: 5,
             pointBorderWidth: 3,
-            pointBackgroundColor: `rgba(${colours[continent].red}, ${colours[continent].green}, ${colours[continent].blue}, 1)`,
+            pointBackgroundColor: getColour(continent),
             pointBorderColor: "rgb(0, 0, 0)",
             pointRadius: countryData.map((p) => (p.year === maxYear ? 8 : 0)),
             pointHoverRadius: countryData.map((p) =>
-              p.year === maxYear ? 8 : 0
+              p.year === maxYear ? 8 : 0,
             ),
             pointHoverBorderWidth: 3,
           };
@@ -73,50 +71,16 @@ export const LineChart = ({ allData }) => {
       animation: {
         duration: 0,
       },
-      onHover: (e, data, chart) => {
-        if (data.length) {
-          chart.config.options.plugins.datalabels.backgroundColor = (d) => {
-            return d.datasetIndex === data[0].datasetIndex
-              ? "rgba(0, 0, 0, 0.8)"
-              : "rgba(0, 0, 0, 0.1)";
-          };
-          chart.data.datasets = chart.data.datasets.map((d, i) => {
-            if (i === data[0].datasetIndex) {
-              return d;
-            } else {
-              return {
-                ...d,
-                borderColor: d.borderColor.replace(/[0.]?1\)/, "0.1)"),
-                pointBackgroundColor: d.pointBackgroundColor.replace(
-                  /[0.]?1\)/,
-                  "0.1)"
-                ),
-                pointBorderColor: "rgba(128, 128, 128, 0.1)",
-              };
-            }
-          });
-          chart.update();
-        } else {
-          chart.config.options.plugins.datalabels.backgroundColor = (d) =>
-            "rgba(0, 0, 0, 1)";
-          chart.data.datasets = chart.data.datasets.map((d) => ({
-            ...d,
-            borderColor: d.borderColor.replace(/0.1\)/, "1)"),
-            pointBackgroundColor: d.pointBackgroundColor.replace(/0.1\)/, "1)"),
-            pointBorderColor: "rgb(0, 0, 0)",
-          }));
-          chart.update();
-        }
-      },
+      onHover: lineChartHover,
       scales: {
         x: {
           type: "category",
-          labels: chartData.allYears.map((d) => "" + d).concat("", "", "Today"),
+          labels: chartData.allYears.map((d) => d).concat("", "", "Today"),
           title: {
             display: true,
             text: "Time",
             font: {
-              size: window.innerWidth < 1280 ? 16 : 24,
+              size: getAxisFontSize(),
               family: "'Work Sans', sans-serif",
             },
           },
@@ -166,8 +130,8 @@ export const LineChart = ({ allData }) => {
               type: "line",
               mode: "vertical",
               drawTime: "beforeDraw",
-              xMin: "" + maxYear,
-              xMax: "" + maxYear,
+              xMin: maxYear,
+              xMax: maxYear,
               borderColor: "rgb(128, 128, 128)",
               borderWidth: 1,
               borderDash: [3],
@@ -177,7 +141,7 @@ export const LineChart = ({ allData }) => {
         datalabels: {
           formatter: (value, context) => {
             if (context.dataIndex === context.dataset.data.length - 1) {
-              const label = context.dataset.label;
+              const { label } = context.dataset;
               const labelSplit = label.split(" ");
               if (label.split(" ").length > 2) {
                 let wrappedLabel = "";
@@ -205,7 +169,7 @@ export const LineChart = ({ allData }) => {
             family: "'Work Sans', sans-serif",
           },
           offset: 14,
-          backgroundColor: (d) => "rgba(0, 0, 0, 1)",
+          backgroundColor: (d) => "rgba(0, 0, 0, 0.8)",
           borderRadius: 2,
           borderWidth: 1,
           clamp: true,
@@ -235,5 +199,5 @@ export const LineChart = ({ allData }) => {
     );
   }
 
-  return <p>Loading</p>;
+  return <Loading />;
 };

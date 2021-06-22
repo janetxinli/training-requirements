@@ -1,13 +1,20 @@
+@import "../variables";
+
 .sidebar {
   width: 100%;
   margin: 2em 0;
-}
 
-@media (min-width: 1280px) {
-  .sidebar {
-    height: 90vh;
+  @media (min-width: $lgscreen) {
     width: 25%;
     max-width: 20em;
+  }
+
+  @media (min-width: $lgscreen) and (orientation: landscape) {
+    height: 90vh;
+  }
+
+  @media (min-width: $lgscreen) and (orientation: portrait) {
+    height: 60vh;
   }
 }
 
@@ -18,10 +25,8 @@
   border: 1px solid #d3d3d3;
   border-radius: 2px;
   padding: 4px;
-}
 
-@media (min-width: 1280px) {
-  .select {
+  @media (min-width: $lgscreen) {
     height: 100%;
   }
 }
@@ -29,10 +34,8 @@
 .map {
   padding-bottom: 1em;
   width: 66%;
-}
 
-@media (min-width: 1280px) {
-  .map {
+  @media (min-width: $lgscreen) {
     width: 100%;
   }
 }
@@ -40,18 +43,18 @@
 .search {
   padding: 0.5em;
   margin-bottom: 1em;
-  border: 1px solid #d3d3d3;
-  background-color: #fafafa;
+  border: 1px solid $lightgrey;
+  background-color: $lightlightgrey;
   border-radius: 2px;
   font-family: "Work Sans", sans-serif;
   font-size: 1rem;
   width: 100%;
-}
 
-.search:focus,
-.search:active {
-  outline: none;
-  border: 2px solid #2a9d8f;
+  &:focus,
+  &:active {
+    outline: none;
+    border: 2px solid $persiangreen;
+  }
 }
 
 .selected-countries,
@@ -59,17 +62,13 @@
   width: 100%;
   white-space: nowrap;
   text-overflow: ellipsis;
+  flex: 0 0 auto;
 }
 
 .selected-countries {
   position: relative;
-  border-bottom: 2px solid #2a9d8f;
+  border-bottom: 2px solid $persiangreen;
 }
-
-/* .unselected-countries > last-child {
-  padding-bottom: 0.5em;
-  color: red;
-} */
 
 .country-name {
   display: inline-block;
@@ -77,20 +76,17 @@
   overflow-x: hidden;
   text-overflow: ellipsis;
   width: 100%;
-}
+  flex: 0 0 auto;
 
-.country-name:first-child {
-  padding-top: 0.5em;
-}
+  &:first-child {
+    padding-top: 0.5em;
+  }
 
-.country-name:last-child {
-  padding-bottom: 0.5em;
-}
+  &:last-child {
+    padding-bottom: 0.5em;
+  }
 
-.country-name label {
-  line-height: 1.5;
-}
-
-.dropdown {
-  position: fixed;
+  label {
+    line-height: 1.5;
+  }
 }

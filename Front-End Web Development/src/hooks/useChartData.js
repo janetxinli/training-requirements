@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export const useChartData = (allData, defaultSelected = []) => {
   const [data, setData] = useState(allData);
@@ -18,10 +18,10 @@ export const useChartData = (allData, defaultSelected = []) => {
   }, [allData]);
 
   // initialize selected data
-  const initializeData = (data) => {
-    setData(data);
+  const initializeData = (newData) => {
+    setData(newData);
     setSelected(
-      [...new Set(data.map((d) => d.label))].reduce((o, a) => {
+      [...new Set(newData.map((d) => d.label))].reduce((o, a) => {
         if (defaultSelected.indexOf(a) === -1) {
           o[a] = false;
         } else {
@@ -29,7 +29,7 @@ export const useChartData = (allData, defaultSelected = []) => {
         }
 
         return o;
-      }, {})
+      }, {}),
     );
   };
 

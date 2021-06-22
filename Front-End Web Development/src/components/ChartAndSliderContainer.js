@@ -1,6 +1,8 @@
 import React from "react";
-import styles from "./ChartAndSliderContainer.module.css";
+import styles from "./ChartAndSliderContainer.module.scss";
 
-export const ChartAndSliderContainer = ({ children }) => {
-  return <section className={`df df-fc df-ai-c ${styles["chart-container"]}`}>{children}</section>;
-};
+export const ChartAndSliderContainer = ({ children }) => (
+  <section className={`df df-fc df-ai-c ${styles["chart-container"]}`}>
+    {children}
+  </section>
+);

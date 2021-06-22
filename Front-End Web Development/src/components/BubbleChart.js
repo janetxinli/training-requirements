@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Bubble } from "react-chartjs-2";
 import { bubbleChartHover } from "../helpers/bubbleChartHover";
-import { getBubbleBackgroundColour } from "../helpers/getBubbleBackgroundColour";
-import { getBubbleBorderColour } from "../helpers/getBubbleBorderColour";
+import {
+  getBubbleBackgroundColour,
+  getBubbleBorderColour,
+} from "../helpers/colours";
 import {
   getAxisFontSize,
   getDatalabelFontSize,
@@ -13,11 +15,8 @@ import { BubbleSizeDropdown } from "./BubbleSizeDropdown";
 import { ChartAndSliderContainer } from "./ChartAndSliderContainer";
 import { ChartPageLayout } from "./ChartPageLayout";
 import { ChartSidebar } from "./ChartSidebar";
+import { Loading } from "./Loading";
 import { Slider } from "./Slider";
-
-//TODO don't change all select values on hover
-//TODO loading component
-//TODO consolidate colour helper functions
 
 export const BubbleChart = ({ allData }) => {
   const chartData = useChartData(allData);
@@ -36,19 +35,13 @@ export const BubbleChart = ({ allData }) => {
   // update chartData once loaded
   useEffect(() => {
     if (allData) {
-      chartData.initializeData(
-        allData.filter((d) => {
-          return d.year === currentYear;
-        })
-      );
+      chartData.initializeData(allData.filter((d) => d.year === currentYear));
     }
   }, [allData]);
 
   // filter chartData when currentYear changes
   useEffect(() => {
-    chartData.filterData((d) => {
-      return d.year === currentYear;
-    });
+    chartData.filterData((d) => d.year === currentYear);
   }, [currentYear]);
 
   if (chartData.data && chartData.selected) {
@@ -58,23 +51,21 @@ export const BubbleChart = ({ allData }) => {
       datasets: [
         {
           label: "Population",
-          data: chartData.data.map((d) => {
-            return {
-              x: d.gdpPercap,
-              y: d.lifeExpectancy,
-              label: d.label,
-              r: radiusScale[radiusCategory] * d[radiusCategory],
-              continent: d.continent,
-            };
-          }),
+          data: chartData.data.map((d) => ({
+            x: d.gdpPercap,
+            y: d.lifeExpectancy,
+            label: d.label,
+            r: radiusScale[radiusCategory] * d[radiusCategory],
+            continent: d.continent,
+          })),
           backgroundColor: getBubbleBackgroundColour(
             chartData.data,
-            chartData.selected
+            chartData.selected,
           ),
           borderWidth: 1,
           borderColor: getBubbleBorderColour(
             chartData.data,
-            chartData.selected
+            chartData.selected,
           ),
         },
       ],
@@ -92,12 +83,12 @@ export const BubbleChart = ({ allData }) => {
           chart,
           radiusScale[radiusCategory],
           chartData.selected,
-          setHoverValue
+          setHoverValue,
         ),
       onClick: (e, data, chart) => {
         if (data.length) {
           chartData.toggleSelected(
-            chart.data.datasets[0].data[data[0].index].label
+            chart.data.datasets[0].data[data[0].index].label,
           );
         }
       },
@@ -141,13 +132,12 @@ export const BubbleChart = ({ allData }) => {
       plugins: {
         tooltip: {
           filter: (chart) => {
-            const label = chart.dataset.data[chart.dataIndex].label;
+            // disable tooltip if data point is selected
+            const { label } = chart.dataset.data[chart.dataIndex];
             return !chartData.selected[label];
           },
           callbacks: {
-            label: (ctx) => {
-              return ctx.dataset.data[ctx.dataIndex].label;
-            },
+            label: (ctx) => ctx.dataset.data[ctx.dataIndex].label,
           },
           bodyFont: {
             family: "'Work Sans', sans-serif",
@@ -167,13 +157,14 @@ export const BubbleChart = ({ allData }) => {
           },
         },
         datalabels: {
-          formatter: (value, context) => {
+          formatter: (value) => {
+            // apply labels to selected data points
             if (chartData.selected[value.label]) {
               return value.label;
             }
             return null;
           },
-          color: "white",
+          color: "rgb(255, 255, 255)",
           align: "top",
           font: {
             size: getDatalabelFontSize(),
@@ -218,5 +209,5 @@ export const BubbleChart = ({ allData }) => {
     );
   }
 
-  return <h2>Loading...</h2>;
+  return <Loading />;
 };

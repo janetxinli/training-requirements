@@ -1,9 +1,10 @@
+@import "../variables";
+
 .chart-layout {
   flex-direction: column;
-}
+  margin-top: 2em;
 
-@media (min-width: 1280px) {
-  .chart-layout {
+  @media (min-width: $lgscreen) {
     flex-direction: row;
     align-items: center;
     justify-content: center;
