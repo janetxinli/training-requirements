@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Bubble } from "react-chartjs-2";
 import { bubbleChartHover } from "../helpers/bubbleChartHover";
 import {
@@ -11,6 +11,7 @@ import {
   getTitleFontSize,
 } from "../helpers/getFontSize";
 import { useChartData } from "../hooks/useChartData";
+import { useWindowWidth } from "../hooks/useWindowWidth";
 import { BubbleSizeDropdown } from "./BubbleSizeDropdown";
 import { ChartAndSliderContainer } from "./ChartAndSliderContainer";
 import { ChartPageLayout } from "./ChartPageLayout";
@@ -19,11 +20,14 @@ import { Loading } from "./Loading";
 import { Slider } from "./Slider";
 
 export const BubbleChart = ({ allData }) => {
-  const chartData = useChartData(allData);
+  const chartData = useChartData(null);
+  const width = useWindowWidth();
 
   const [radiusCategory, setRadiusCategory] = useState("population");
   const [currentYear, setCurrentYear] = useState(2007);
   const [hoverValue, setHoverValue] = useState(null);
+
+  const chartRef = useRef(null);
 
   // define how bubble radii are scaled
   const radiusScale = {
@@ -43,6 +47,13 @@ export const BubbleChart = ({ allData }) => {
   useEffect(() => {
     chartData.filterData((d) => d.year === currentYear);
   }, [currentYear]);
+
+  // update chart to resize font on window resize
+  useEffect(() => {
+    if (chartRef.current) {
+      chartRef.current.update();
+    }
+  }, [width]);
 
   if (chartData.data && chartData.selected) {
     // data available to render
@@ -159,7 +170,8 @@ export const BubbleChart = ({ allData }) => {
         datalabels: {
           formatter: (value) => {
             // apply labels to selected data points
-            if (chartData.selected[value.label]) {
+            const { label } = value;
+            if (chartData.selected[label]) {
               return value.label;
             }
             return null;
@@ -184,7 +196,11 @@ export const BubbleChart = ({ allData }) => {
     return (
       <ChartPageLayout>
         <ChartAndSliderContainer>
-          <Bubble data={bubbleChartData} options={bubbleChartOptions} />
+          <Bubble
+            data={bubbleChartData}
+            options={bubbleChartOptions}
+            ref={chartRef}
+          />
           <Slider
             listData={chartData.allYears}
             min="0"

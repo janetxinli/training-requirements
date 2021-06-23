@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Line } from "react-chartjs-2";
 import { getColour } from "../helpers/colours";
 import {
@@ -8,6 +8,7 @@ import {
 } from "../helpers/getFontSize";
 import { lineChartHover } from "../helpers/lineChartHover";
 import { useChartData } from "../hooks/useChartData";
+import { useWindowWidth } from "../hooks/useWindowWidth";
 import { ChartAndSliderContainer } from "./ChartAndSliderContainer";
 import { ChartPageLayout } from "./ChartPageLayout";
 import { ChartSidebar } from "./ChartSidebar";
@@ -16,7 +17,11 @@ import { Slider } from "./Slider";
 
 export const LineChart = ({ allData }) => {
   const chartData = useChartData(allData, ["Canada", "Indonesia", "Nigeria"]);
+  const width = useWindowWidth();
+
   const [maxYear, setMaxYear] = useState(2007);
+
+  const chartRef = useRef(null);
 
   // update chartData once loaded
   useEffect(() => {
@@ -29,6 +34,13 @@ export const LineChart = ({ allData }) => {
   useEffect(() => {
     chartData.filterData((d) => d.year <= maxYear);
   }, [maxYear]);
+
+  // update chart to resize font on window resize
+  useEffect(() => {
+    if (chartRef.current) {
+      chartRef.current.update();
+    }
+  }, [width]);
 
   if (chartData.data && chartData.selected) {
     // data available to render
