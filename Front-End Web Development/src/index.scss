@@ -19,7 +19,11 @@ code {
 }
 
 p,
-a {
+a,
+select,
+label,
+input[type="text"],
+input[type="text"]::placeholder {
   @include responsive-text(1rem, 1.125rem, 1.25rem);
 }
 
@@ -28,11 +32,8 @@ a {
   color: $persiangreen;
 }
 
-//TODO responsive text sizes
-
 h1,
-h2,
-h3 {
+h2 {
   text-align: center;
 }
 
