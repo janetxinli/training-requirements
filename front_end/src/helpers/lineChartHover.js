@@ -30,10 +30,10 @@ export const lineChartHover = (e, data, chart) => {
     chart.update();
   } else {
     // darken datalabel background colour
-    chart.config.options.plugins.datalabels.backgroundColor = (d) =>
+    chart.config.options.plugins.datalabels.backgroundColor = () =>
       "rgba(0, 0, 0, 0.8)";
 
-    chart.config.options.plugins.datalabels.color = (d) =>
+    chart.config.options.plugins.datalabels.color = () =>
       "rgba(255, 255, 255, 1)";
 
     // darken lines/points
