@@ -20,7 +20,7 @@ import { Loading } from "./Loading";
 import { Slider } from "./Slider";
 
 export const BubbleChart = ({ allData }) => {
-  const chartData = useChartData(null);
+  const chartData = useChartData(allData);
   const width = useWindowWidth();
 
   const [radiusCategory, setRadiusCategory] = useState("population");
