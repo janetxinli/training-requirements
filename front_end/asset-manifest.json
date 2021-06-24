@@ -1,21 +1,21 @@
 {
   "files": {
-    "main.css": "/training-requirements/static/css/main.5543ceb2.chunk.css",
-    "main.js": "/training-requirements/static/js/main.5074ddde.chunk.js",
-    "main.js.map": "/training-requirements/static/js/main.5074ddde.chunk.js.map",
-    "runtime-main.js": "/training-requirements/static/js/runtime-main.b2abcc50.js",
-    "runtime-main.js.map": "/training-requirements/static/js/runtime-main.b2abcc50.js.map",
-    "static/js/2.32996e1a.chunk.js": "/training-requirements/static/js/2.32996e1a.chunk.js",
-    "static/js/2.32996e1a.chunk.js.map": "/training-requirements/static/js/2.32996e1a.chunk.js.map",
-    "index.html": "/training-requirements/index.html",
-    "static/css/main.5543ceb2.chunk.css.map": "/training-requirements/static/css/main.5543ceb2.chunk.css.map",
-    "static/js/2.32996e1a.chunk.js.LICENSE.txt": "/training-requirements/static/js/2.32996e1a.chunk.js.LICENSE.txt",
-    "static/media/gapminder_clean.ab8b93e9.csv": "/training-requirements/static/media/gapminder_clean.ab8b93e9.csv"
+    "main.css": "/training-requirements/front_end/static/css/main.5543ceb2.chunk.css",
+    "main.js": "/training-requirements/front_end/static/js/main.e23faba7.chunk.js",
+    "main.js.map": "/training-requirements/front_end/static/js/main.e23faba7.chunk.js.map",
+    "runtime-main.js": "/training-requirements/front_end/static/js/runtime-main.26e961ab.js",
+    "runtime-main.js.map": "/training-requirements/front_end/static/js/runtime-main.26e961ab.js.map",
+    "static/js/2.32996e1a.chunk.js": "/training-requirements/front_end/static/js/2.32996e1a.chunk.js",
+    "static/js/2.32996e1a.chunk.js.map": "/training-requirements/front_end/static/js/2.32996e1a.chunk.js.map",
+    "index.html": "/training-requirements/front_end/index.html",
+    "static/css/main.5543ceb2.chunk.css.map": "/training-requirements/front_end/static/css/main.5543ceb2.chunk.css.map",
+    "static/js/2.32996e1a.chunk.js.LICENSE.txt": "/training-requirements/front_end/static/js/2.32996e1a.chunk.js.LICENSE.txt",
+    "static/media/gapminder_clean.ab8b93e9.csv": "/training-requirements/front_end/static/media/gapminder_clean.ab8b93e9.csv"
   },
   "entrypoints": [
-    "static/js/runtime-main.b2abcc50.js",
+    "static/js/runtime-main.26e961ab.js",
     "static/js/2.32996e1a.chunk.js",
     "static/css/main.5543ceb2.chunk.css",
-    "static/js/main.5074ddde.chunk.js"
+    "static/js/main.e23faba7.chunk.js"
   ]
 }
