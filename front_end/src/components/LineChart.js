@@ -50,34 +50,28 @@ export const LineChart = ({ allData }) => {
       datasets: Object.entries(chartData.selected)
         .filter((o) => o[1] === true)
         .map((o) => o[0])
-        .map((c) => {
-          const countryData = chartData.data.filter((d) => d.label === c);
-          const { continent } = countryData[0];
-          return {
-            label: c,
-            data: countryData.map((p) => ({
-              x: p.year,
-              y: p.gdpPercap,
-            })),
-            borderColor: getColour(continent),
-            borderWidth: 5,
-            pointBorderWidth: 3,
-            pointBackgroundColor: getColour(continent),
-            pointBorderColor: "rgb(0, 0, 0)",
-            pointRadius: countryData.map((p) => (p.year === maxYear ? 8 : 0)),
-            pointHoverRadius: countryData.map((p) =>
-              p.year === maxYear ? 8 : 0,
-            ),
-            pointHoverBorderWidth: 3,
-          };
-        }),
+        .map((c) => chartData.data.filter((d) => d.label === c))
+        .filter((c) => c.length > 0)
+        .map((c) => ({
+          label: c[0].label,
+          data: c.map((p) => ({ x: p.year, y: p.gdpPercap })),
+          borderColor: getColour(c[0].continent),
+          borderWidth: 5,
+          pointBorderWidth: 3,
+          pointBackgroundColor: getColour(c[0].continent),
+          pointBorderColor: "rgb(0, 0, 0)",
+          pointRadius: c.map((p) => (p.year === maxYear ? 8 : 0)),
+          pointHoverRadius: c.map((p) => (p.year === maxYear ? 8 : 0)),
+          pointHoverBorderWidth: 3,
+        })),
     };
 
     const chartOptions = {
       aspectRatio: 1,
       layout: {
         padding: {
-          right: 80,
+          top: getTitleFontSize() * 2,
+          right: 60,
         },
       },
       animation: {
@@ -113,6 +107,7 @@ export const LineChart = ({ allData }) => {
               size: getAxisFontSize(),
               family: "'Work Sans', sans-serif",
             },
+            align: "center",
           },
           ticks: {
             font: {
@@ -122,14 +117,6 @@ export const LineChart = ({ allData }) => {
         },
       },
       plugins: {
-        title: {
-          display: true,
-          text: `Until ${maxYear}`,
-          font: {
-            size: getTitleFontSize(),
-            family: "'Work Sans', sans-serif",
-          },
-        },
         tooltip: {
           enabled: false,
         },
@@ -181,7 +168,7 @@ export const LineChart = ({ allData }) => {
             family: "'Work Sans', sans-serif",
           },
           offset: 14,
-          backgroundColor: (d) => "rgba(0, 0, 0, 0.8)",
+          backgroundColor: () => "rgba(0, 0, 0, 0.8)",
           borderRadius: 2,
           borderWidth: 1,
           clamp: true,
