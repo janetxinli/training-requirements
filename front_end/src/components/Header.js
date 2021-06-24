@@ -7,31 +7,31 @@ export const Header = () => {
 
   return (
     <header className={`container df df-ai-c df-jc-c ${styles.header}`}>
-      <Link to="/">
+      <Link to={`${process.env.PUBLIC_URL}/`}>
         <h1 className={styles.logo}>Gapminder</h1>
       </Link>
 
       <nav className={`df ${styles["nav-bar"]}`}>
         <Link
-          to="/"
+          to={`${process.env.PUBLIC_URL}/`}
           className={`${styles["nav-link"]} ${
-            location.pathname === "/" ? styles.current : null
+            location.pathname === `${process.env.PUBLIC_URL}/` ? styles.current : null
           }`}
         >
           Home
         </Link>
         <Link
-          to="/bubble"
+          to={`${process.env.PUBLIC_URL}/bubble`}
           className={`${styles["nav-link"]} ${
-            location.pathname === "/bubble" ? styles.current : null
+            location.pathname === `${process.env.PUBLIC_URL}/bubble` ? styles.current : null
           }`}
         >
           Bubble
         </Link>
         <Link
-          to="/line"
+          to={`${process.env.PUBLIC_URL}/line`}
           className={`${styles["nav-link"]} ${
-            location.pathname === "/line" ? styles.current : null
+            location.pathname === `${process.env.PUBLIC_URL}/line` ? styles.current : null
           }`}
         >
           Line

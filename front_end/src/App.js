@@ -46,13 +46,13 @@ function App() {
     <Router>
       <Header />
       <Switch>
-        <Route path="/bubble">
+        <Route path={`${process.env.PUBLIC_URL}/bubble`}>
           <BubbleChart allData={allData} />
         </Route>
-        <Route path="/line">
+        <Route path={`${process.env.PUBLIC_URL}/line`}>
           <LineChart allData={allData} />
         </Route>
-        <Route path="/">
+        <Route path={`${process.env.PUBLIC_URL}/`}>
           <Home />
         </Route>
       </Switch>

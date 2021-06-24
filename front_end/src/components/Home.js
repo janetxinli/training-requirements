@@ -20,11 +20,11 @@ export const Home = () => (
         <br />
         <br />
         Explore the relationship between GDP per capita, life expectancy and
-        other attributes with a Bubble Chart <Link to="/bubble">here</Link>.
+        other attributes with a Bubble Chart <Link to={`${process.env.PUBLIC_URL}/bubble`}>here</Link>.
         <br />
         <br />
         Explore how GDP per capita changes over time in different countries here
-        with a Line Chart <Link to="/line">here</Link>.
+        with a Line Chart <Link to={`${process.env.PUBLIC_URL}/line`}>here</Link>.
         <br />
       </p>
     </article>
