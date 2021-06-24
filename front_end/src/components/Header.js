@@ -11,7 +11,7 @@ export const Header = () => {
         <h1 className={styles.logo}>Gapminder</h1>
       </Link>
 
-      <nav className={`df ${styles["nav-bar"]}`}>
+      <nav className="df">
         <Link
           to={`${process.env.PUBLIC_URL}/`}
           className={`${styles["nav-link"]} ${

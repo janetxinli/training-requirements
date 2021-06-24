@@ -5,7 +5,10 @@ export const getTitleFontSize = () => {
   if (window.innerWidth > 720) {
     return 30;
   }
-  return 24;
+  if (window.innerWidth > 480) {
+    return 24;
+  }
+  return 20;
 };
 
 export const getAxisFontSize = () => {
@@ -15,7 +18,10 @@ export const getAxisFontSize = () => {
   if (window.innerWidth > 720) {
     return 24;
   }
-  return 16;
+  if (window.innerWidth > 480) {
+    return 16;
+  }
+  return 12;
 };
 
 export const getDatalabelFontSize = () => {

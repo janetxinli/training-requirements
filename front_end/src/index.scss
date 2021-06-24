@@ -24,7 +24,7 @@ select,
 label,
 input[type="text"],
 input[type="text"]::placeholder {
-  @include responsive-text(1rem, 1.125rem, 1.25rem);
+  @include responsive-text(0.75rem, 1rem, 1.125rem, 1.25rem);
 }
 
 a {
@@ -38,20 +38,20 @@ h2 {
 }
 
 h1 {
-  @include responsive-text(1.5rem, 1.625rem, 1.75rem);
+  @include responsive-text(1.25rem, 1.5rem, 1.625rem, 1.75rem);
 }
 
 h2 {
-  @include responsive-text(1.5rem, 1.625rem, 1.75rem);
+  @include responsive-text(1.25rem, 1.5rem, 1.625rem, 1.75rem);
 }
 
 /* utility classes */
 
 .container {
   margin: 0 auto;
-  width: 95%;
+  width: 90%;
 
-  @media (min-width: $smscreen) {
+  @media (min-width: $mdscreen) {
     width: 80%;
   }
 }

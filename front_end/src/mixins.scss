@@ -1,7 +1,11 @@
 @import "variables";
 
-@mixin responsive-text($defaultsize, $mdscreensize, $lgscreensize) {
+@mixin responsive-text($defaultsize, $smscreensize, $mdscreensize, $lgscreensize) {
   font-size: $defaultsize;
+
+  @media (min-width: $smscreen) {
+    font-size: $smscreensize;
+  }
 
   @media (min-width: $mdscreen) {
     font-size: $mdscreensize;
