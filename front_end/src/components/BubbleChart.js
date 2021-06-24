@@ -31,7 +31,7 @@ export const BubbleChart = ({ allData }) => {
 
   // define how bubble radii are scaled
   const radiusScale = {
-    population: 1 / 20000000,
+    population: width > 720 ? 1 / 15000000 : 1 / 20000000,
     babiesPerWoman: 3,
     co2: 1,
   };
