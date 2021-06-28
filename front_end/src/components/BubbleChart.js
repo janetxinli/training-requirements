@@ -31,9 +31,9 @@ export const BubbleChart = ({ allData }) => {
 
   // define how bubble radii are scaled
   const radiusScale = {
-    population: width > 720 ? 1 / 15000000 : 1 / 20000000,
-    babiesPerWoman: 3,
-    co2: 1,
+    population: (v) => (1 / 300) * Math.sqrt(v / Math.PI),
+    babiesPerWoman: (v) => 25 * Math.sqrt(v / Math.PI),
+    co2: (v) => 15 * Math.sqrt(v / Math.PI),
   };
 
   // update chartData once loaded
@@ -66,7 +66,7 @@ export const BubbleChart = ({ allData }) => {
             x: d.gdpPercap,
             y: d.lifeExpectancy,
             label: d.label,
-            r: radiusScale[radiusCategory] * d[radiusCategory],
+            r: radiusScale[radiusCategory](d[radiusCategory]),
             continent: d.continent,
           })),
           backgroundColor: getBubbleBackgroundColour(
@@ -93,7 +93,7 @@ export const BubbleChart = ({ allData }) => {
           e,
           data,
           chart,
-          radiusScale[radiusCategory],
+          radiusCategory,
           chartData.selected,
           setHoverValue,
         ),
@@ -107,8 +107,9 @@ export const BubbleChart = ({ allData }) => {
       scales: {
         x: {
           type: "logarithmic",
-          min: 0,
-          max: 128000,
+          offset: true,
+          min: 100,
+          max: 120000,
           title: {
             display: true,
             text: "Income per person (GDP/capita)",
@@ -121,9 +122,13 @@ export const BubbleChart = ({ allData }) => {
             font: {
               family: "'Work Sans', sans-serif",
             },
+            autoSkip: false,
+            includeBounds: false,
+            backdropPadding: 0,
           },
         },
         y: {
+          type: "linear",
           min: 20,
           max: 90,
           title: {

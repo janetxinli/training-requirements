@@ -28,11 +28,17 @@ const getPrintableValue = (value) => {
   return prefix + suffix;
 };
 
+const inverseRadiusScale = {
+  population: (v) => Math.PI * ((300 * v) ** 2),
+  babiesPerWoman: (v) => Math.PI * ((v / 25) ** 2),
+  co2: (v) => Math.PI * (v ** 2),
+};
+
 export const bubbleChartHover = (
   e,
   data,
   chart,
-  radiusScale,
+  radiusCategory,
   selected,
   setHoverValue,
 ) => {
@@ -41,7 +47,7 @@ export const bubbleChartHover = (
 
     // set hover value to size value
     setHoverValue(
-      getPrintableValue(data[0].element.$context.parsed._custom / radiusScale),
+      getPrintableValue(inverseRadiusScale[radiusCategory](data[0].element.$context.parsed._custom)),
     );
 
     // update chart colours to darken hovered bubble
