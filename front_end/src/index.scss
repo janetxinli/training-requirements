@@ -67,6 +67,17 @@ select {
   }
 }
 
+button[type="submit"] {
+  @include responsive-text(0.75rem, 1rem, 1.125rem, 1.25rem);
+  margin-top: 1.5em;
+  padding: 0.5em;
+  font-family: "Work Sans", sans-serif;
+}
+
+canvas {
+  border: 2px dashed blue;
+}
+
 /* utility classes */
 
 .container {
