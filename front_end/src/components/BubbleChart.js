@@ -31,13 +31,13 @@ export const BubbleChart = ({ allData }) => {
   const chartRef = useRef(null);
 
   // define how bubble radii are scaled
-  // use a constant radius size
   const radiusScale = {
     population: (v) => (1 / 300) * Math.sqrt(v / Math.PI),
     fertilityRate: (v) => 25 * Math.sqrt(v / Math.PI),
     co2: (v) => 15 * Math.sqrt(v / Math.PI),
   };
 
+    // use a constant radius size
   const constantRadius = {
     population: () => 15,
     fertilityRate: () => 15,
@@ -63,6 +63,7 @@ export const BubbleChart = ({ allData }) => {
     }
   }, [width]);
 
+  // toggle constant radius state
   const toggleConstantRadius = (e) => {
     e.preventDefault();
     setUseConstant(!useConstant);
