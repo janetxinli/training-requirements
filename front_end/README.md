@@ -25,6 +25,6 @@ npm install
 npm start
 ```
 
-This runs the app in the development mode on port 3000. Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+This runs the app in the development mode on port 3000. Open [http://localhost:3000](http://localhost:3000/training-requirements/front_end/) to view it in the browser.
 
 You can also access a live version of the app [here](https://janetxinli.github.io/training-requirements/front_end/). This production build was created using `gh-pages`.
