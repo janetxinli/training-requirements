@@ -30,12 +30,13 @@ function App() {
             gdpPercap: res.gdpPercap,
             lifeExpectancy: res.lifeExpectancy,
             population: res.pop,
-            babiesPerWoman: res.fertilityRate,
+            fertilityRate: res.fertilityRate,
             co2: res.co2,
             continent: getContinent(res.continent),
             year: +res.year,
           }))
-          .filter((d) => d.continent !== "Unknown");
+          .filter((d) => d.continent !== "Unknown")
+          .filter((o) => Object.values(o).indexOf("") === -1);
 
         setAllData(filtered);
       },

@@ -2,10 +2,10 @@
 
 .sidebar {
   width: 100%;
-  margin: 2em 0;
+  margin-top: 5em;
 
   @media (min-width: $lgscreen) {
-    width: 25%;
+    width: 20%;
     max-width: 20em;
   }
 
@@ -32,8 +32,9 @@
 }
 
 .map {
-  padding-bottom: 1em;
+  padding-bottom: 2em;
   width: 66%;
+  max-width: 25em;
 
   @media (min-width: $lgscreen) {
     width: 100%;
@@ -44,7 +45,6 @@
   padding: 0.5em;
   margin-bottom: 1em;
   border: 1px solid $lightgrey;
-  background-color: $lightlightgrey;
   border-radius: 2px;
   font-family: "Work Sans", sans-serif;
   font-size: 1rem;

@@ -1,37 +1,10 @@
 import { getBubbleBackgroundColour, getBubbleBorderColour } from "./colours";
-
-const getPrintableValue = (value) => {
-  let suffix;
-  const log = Math.log10(value);
-  const e = Math.floor(log / 3);
-
-  switch (e) {
-    case 0:
-      suffix = "";
-      break;
-    case 1:
-      suffix = "k";
-      break;
-    case 2:
-      suffix = "M";
-      break;
-    case 3:
-      suffix = "B";
-      break;
-    default:
-      break;
-  }
-
-  const prefix = String(value / 10 ** (3 * e))
-    .slice(0, 4)
-    .replace(/\.$/, "");
-  return prefix + suffix;
-};
+import { getPrintableValue } from "./getPrintableValue";
 
 const inverseRadiusScale = {
-  population: (v) => Math.PI * ((300 * v) ** 2),
-  babiesPerWoman: (v) => Math.PI * ((v / 25) ** 2),
-  co2: (v) => Math.PI * (v ** 2),
+  population: (v) => Math.PI * (300 * v) ** 2,
+  fertilityRate: (v) => Math.PI * (v / 25) ** 2,
+  co2: (v) => Math.PI * v ** 2,
 };
 
 export const bubbleChartHover = (
@@ -44,10 +17,13 @@ export const bubbleChartHover = (
 ) => {
   if (data.length) {
     // hovering over a data point
-
     // set hover value to size value
     setHoverValue(
-      getPrintableValue(inverseRadiusScale[radiusCategory](data[0].element.$context.parsed._custom)),
+      getPrintableValue(
+        inverseRadiusScale[radiusCategory](
+          data[0].element.$context.parsed._custom,
+        ),
+      ),
     );
 
     // update chart colours to darken hovered bubble
@@ -69,8 +45,9 @@ export const bubbleChartHover = (
 
     // add line annotation
     chart.config.options.plugins.annotation = {
+      ...chart.config.options.plugins.annotation,
       annotations: {
-        line1: {
+        line2: {
           type: "line",
           drawTime: "beforeDraw",
           yMin: data[0].element.$context.parsed.y,
@@ -80,7 +57,7 @@ export const bubbleChartHover = (
           borderWidth: 2,
           borderDash: [4],
         },
-        line2: {
+        line3: {
           type: "line",
           drawTime: "beforeDraw",
           xMin: data[0].element.$context.parsed.x,
@@ -113,8 +90,14 @@ export const bubbleChartHover = (
       selected,
     );
 
-    // remove annotation
-    chart.config.options.plugins.annotation = undefined;
+    // remove hover annotations
+    if (
+      chart.config.options.plugins.annotation &&
+      chart.config.options.plugins.annotation.annotations.line2
+    ) {
+      delete chart.config.options.plugins.annotation.annotations.line2;
+      delete chart.config.options.plugins.annotation.annotations.line3;
+    }
 
     chart.update();
   }

@@ -45,7 +45,7 @@ export const LineChart = ({ allData }) => {
   if (chartData.data && chartData.selected) {
     // data available to render
 
-    const data = {
+    const lineChartData = {
       labels: chartData.allYears,
       datasets: Object.entries(chartData.selected)
         .filter((o) => o[1] === true)
@@ -66,7 +66,9 @@ export const LineChart = ({ allData }) => {
         })),
     };
 
-    const chartOptions = {
+    const lineChartOptions = {
+      responsive: true,
+      maintainAspectRatio: false,
       aspectRatio: 1,
       layout: {
         padding: {
@@ -179,7 +181,12 @@ export const LineChart = ({ allData }) => {
     return (
       <ChartPageLayout>
         <ChartAndSliderContainer>
-          <Line data={data} options={chartOptions} />
+          <Line
+            data={lineChartData}
+            options={lineChartOptions}
+            height={300}
+            width={300}
+          />
           <Slider
             listData={chartData.allYears}
             min="0"

@@ -2,7 +2,7 @@
 
 .chart-layout {
   flex-direction: column;
-  margin: 2em 0;
+  padding-bottom: 2em;
 
   @media (min-width: $lgscreen) {
     flex-direction: row;

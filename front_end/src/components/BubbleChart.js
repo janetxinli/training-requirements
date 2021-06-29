@@ -5,13 +5,11 @@ import {
   getBubbleBackgroundColour,
   getBubbleBorderColour,
 } from "../helpers/colours";
-import {
-  getAxisFontSize,
-  getDatalabelFontSize,
-  getTitleFontSize,
-} from "../helpers/getFontSize";
+import { getAxis } from "../helpers/getAxis";
+import { getDatalabelFontSize, getTitleFontSize } from "../helpers/getFontSize";
 import { useChartData } from "../hooks/useChartData";
 import { useWindowWidth } from "../hooks/useWindowWidth";
+import { AxisDropdown } from "./AxisDropdown";
 import { BubbleSizeDropdown } from "./BubbleSizeDropdown";
 import { ChartAndSliderContainer } from "./ChartAndSliderContainer";
 import { ChartPageLayout } from "./ChartPageLayout";
@@ -26,13 +24,15 @@ export const BubbleChart = ({ allData }) => {
   const [radiusCategory, setRadiusCategory] = useState("population");
   const [currentYear, setCurrentYear] = useState(2007);
   const [hoverValue, setHoverValue] = useState(null);
+  const [xAxis, setXAxis] = useState("gdpPercap");
+  const [yAxis, setYAxis] = useState("lifeExpectancy");
 
   const chartRef = useRef(null);
 
   // define how bubble radii are scaled
   const radiusScale = {
     population: (v) => (1 / 300) * Math.sqrt(v / Math.PI),
-    babiesPerWoman: (v) => 25 * Math.sqrt(v / Math.PI),
+    fertilityRate: (v) => 25 * Math.sqrt(v / Math.PI),
     co2: (v) => 15 * Math.sqrt(v / Math.PI),
   };
 
@@ -61,10 +61,9 @@ export const BubbleChart = ({ allData }) => {
     const bubbleChartData = {
       datasets: [
         {
-          label: "Population",
           data: chartData.data.map((d) => ({
-            x: d.gdpPercap,
-            y: d.lifeExpectancy,
+            x: d[xAxis],
+            y: d[yAxis],
             label: d.label,
             r: radiusScale[radiusCategory](d[radiusCategory]),
             continent: d.continent,
@@ -85,6 +84,8 @@ export const BubbleChart = ({ allData }) => {
 
     const bubbleChartOptions = {
       aspectRatio: 1,
+      responsive: true,
+      maintainAspectRatio: false,
       animation: {
         duration: 0,
       },
@@ -105,45 +106,10 @@ export const BubbleChart = ({ allData }) => {
         }
       },
       scales: {
-        x: {
-          type: "logarithmic",
-          offset: true,
-          min: 100,
-          max: 120000,
-          title: {
-            display: true,
-            text: "Income per person (GDP/capita)",
-            font: {
-              size: getAxisFontSize(),
-              family: "'Work Sans', sans-serif",
-            },
-          },
-          ticks: {
-            font: {
-              family: "'Work Sans', sans-serif",
-            },
-            autoSkip: false,
-            includeBounds: false,
-            backdropPadding: 0,
-          },
-        },
+        x: { ...getAxis(xAxis, chartData) },
         y: {
-          type: "linear",
-          min: 20,
-          max: 90,
-          title: {
-            display: true,
-            text: "Life expectancy (years)",
-            font: {
-              size: getAxisFontSize(),
-              family: "'Work Sans', sans-serif",
-            },
-          },
-          ticks: {
-            font: {
-              family: "'Work Sans', sans-serif",
-            },
-          },
+          ...getAxis(yAxis, chartData),
+          ...yAxis === "year" && { reverse: true }  // categorical y axis needs to be reversed 
         },
       },
       plugins: {
@@ -196,6 +162,24 @@ export const BubbleChart = ({ allData }) => {
           borderWidth: 1,
           clamp: true,
         },
+        ...(xAxis === yAxis && {
+          // draw a line on the diagonal if x and y axes are the same
+          annotation: {
+            annotations: {
+              line1: {
+                type: "line",
+                xMin: (chart) => chart.chart.scales.x.min,
+                xMax: (chart) => chart.chart.scales.x.max,
+                yMin: (chart) => chart.chart.scales.y.min,
+                yMax: (chart) => chart.chart.scales.y.max,
+                borderColor: "rgb((255, 99, 132)",
+                borderWidth: 2,
+                borderDash: [4],
+                drawTime: "beforeDatasetsDraw"
+              }
+            }
+          }
+        })
       },
     };
 
@@ -206,6 +190,8 @@ export const BubbleChart = ({ allData }) => {
             data={bubbleChartData}
             options={bubbleChartOptions}
             ref={chartRef}
+            height={300}
+            width={300}
           />
           <Slider
             listData={chartData.allYears}
@@ -225,6 +211,16 @@ export const BubbleChart = ({ allData }) => {
             sizeValue={radiusCategory}
             setSizeValue={setRadiusCategory}
             hoverValue={hoverValue}
+          />
+          <AxisDropdown
+            choice={xAxis}
+            handleChange={(e) => setXAxis(e.target.value)}
+            label="x-axis"
+          />
+          <AxisDropdown
+            choice={yAxis}
+            handleChange={(e) => setYAxis(e.target.value)}
+            label="y-axis"
           />
         </ChartSidebar>
       </ChartPageLayout>
