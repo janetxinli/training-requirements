@@ -26,22 +26,14 @@ export const BubbleChart = ({ allData }) => {
   const [hoverValue, setHoverValue] = useState(null);
   const [xAxis, setXAxis] = useState("gdpPercap");
   const [yAxis, setYAxis] = useState("lifeExpectancy");
-  const [useConstant, setUseConstant] = useState(false);
 
   const chartRef = useRef(null);
 
   // define how bubble radii are scaled
-  // use a constant radius size
   const radiusScale = {
     population: (v) => (1 / 300) * Math.sqrt(v / Math.PI),
     fertilityRate: (v) => 25 * Math.sqrt(v / Math.PI),
     co2: (v) => 15 * Math.sqrt(v / Math.PI),
-  };
-
-  const constantRadius = {
-    population: () => 15,
-    fertilityRate: () => 15,
-    co2: () => 15,
   };
 
   // update chartData once loaded
@@ -63,11 +55,6 @@ export const BubbleChart = ({ allData }) => {
     }
   }, [width]);
 
-  const toggleConstantRadius = (e) => {
-    e.preventDefault();
-    setUseConstant(!useConstant);
-  };
-
   if (chartData.data && chartData.selected) {
     // data available to render
 
@@ -78,9 +65,7 @@ export const BubbleChart = ({ allData }) => {
             x: d[xAxis],
             y: d[yAxis],
             label: d.label,
-            r: useConstant
-              ? constantRadius[radiusCategory](d[radiusCategory])
-              : radiusScale[radiusCategory](d[radiusCategory]),
+            r: radiusScale[radiusCategory](d[radiusCategory]),
             continent: d.continent,
           })),
           backgroundColor: getBubbleBackgroundColour(
@@ -124,7 +109,7 @@ export const BubbleChart = ({ allData }) => {
         x: { ...getAxis(xAxis, chartData) },
         y: {
           ...getAxis(yAxis, chartData),
-          ...(yAxis === "year" && { reverse: true }), // categorical y axis needs to be reversed
+          ...yAxis === "year" && { reverse: true }  // categorical y axis needs to be reversed 
         },
       },
       plugins: {
@@ -190,11 +175,11 @@ export const BubbleChart = ({ allData }) => {
                 borderColor: "rgb((255, 99, 132)",
                 borderWidth: 2,
                 borderDash: [4],
-                drawTime: "beforeDatasetsDraw",
-              },
-            },
-          },
-        }),
+                drawTime: "beforeDatasetsDraw"
+              }
+            }
+          }
+        })
       },
     };
 
@@ -208,11 +193,6 @@ export const BubbleChart = ({ allData }) => {
             height={300}
             width={300}
           />
-          <button type="submit" onClick={toggleConstantRadius}>
-            {
-              useConstant ? "use value sizes" : "use constant sizes"
-            }
-          </button>
           <Slider
             listData={chartData.allYears}
             min="0"
